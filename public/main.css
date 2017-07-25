@@ -1,1 +1,7 @@
+.search-box {
+  width: 100%;
+}
 
+.search-result:hover {
+  cursor: pointer;
+}
