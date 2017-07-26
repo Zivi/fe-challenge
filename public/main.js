@@ -22,35 +22,66 @@ function callApi(searchTerm) {
     searchResults.innerHTML = '';
     for (let i = 0; i < response.results.length; i += 1) {
       var company = response.results[i];
-      var newLi = document.createElement('li');
-      newLi.className = 'search-result';
-      newLi.dataset.website = company.website;
-      newLi.dataset.avatar = company.avatarUrl;
-      newLi.dataset.tel = company.phone;
-      newLi.dataset.labortype = company.laborType;
-      newLi.innerText = company.name;
-      searchResults.appendChild(newLi);
+      var resultLi = document.createElement('li');
+      var newDiv = document.createElement('div');
+      var webUrl = document.createElement('a');
+      var imgDiv = document.createElement('div');
+      var infoDiv = document.createElement('div');
+      var avatarImg = document.createElement('img');
+      var telLink = document.createElement('a');
+      var laborUl = document.createElement('ul');
+
+      resultLi.className = 'search-result';
+      resultLi.innerText = company.name;
+
+      newDiv.className = 'company-info hide';
+
+      webUrl.href = company.website;
+      webUrl.innerText = company.website;
+
+      imgDiv.className = 'image-container';
+      infoDiv.className = 'info-container';
+
+      avatarImg.src = company.avatarUrl;
+      avatarImg.className = 'company-image';
+
+      // Remove (, ), - and space from telephone number so number can be called on link tap
+      telLink.href = `tel:+1${company.phone.replace(/[()\s-]/g, '')}`;
+      telLink.innerText = company.phone;
+      telLink.className = 'company-tel';
+
+      laborUl.className = 'labor-types';
+      laborUl.innerText = 'Labor Type(s):';
+
+      for (let j = 0; j < company.laborType.length; j += 1) {
+        var newLaborLi = document.createElement('li');
+        newLaborLi.className = 'labor-type';
+        newLaborLi.innerText = (company.laborType[j]);
+        laborUl.appendChild(newLaborLi);
+      }
+
+      imgDiv.appendChild(avatarImg);
+      imgDiv.appendChild(webUrl);
+      infoDiv.appendChild(telLink);
+      infoDiv.appendChild(laborUl);
+      newDiv.appendChild(imgDiv);
+      newDiv.appendChild(infoDiv);
+      resultLi.appendChild(newDiv);
+
+      searchResults.appendChild(resultLi);
     }
   })
 }
 
 // Events on select of search result list item
 document.querySelector('.search-results').addEventListener('click', function(event) {
-
-
+  event.target.childNodes[1].classList.remove('hide');
 })
 
-
-
-// on click of company, show more info as a modal
-// logo should be in image tag
-// li for laborTypes
-// company name
-// <a> link for company website
-// <a> link for phone: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Creating_a_phone_link
 
 // todos: view more results button
 // labor type filters
 // responsive view
 
 // zero search results
+// collapse listing on click close

@@ -1,7 +1,60 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
 .search-box {
   width: 100%;
+  height: 30px;
+}
+
+.search-result {
+  border: 1px solid #f8f8f8;
+  line-height: 30px;
+  padding-left: 10px;
+  font-weight: bold;
+  list-style: none;
 }
 
 .search-result:hover {
   cursor: pointer;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.hide {
+  display: none;
+}
+
+.image-container {
+  padding-right: 10px;
+}
+
+.info-container {
+
+}
+
+.labor-types {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: normal;
+  margin-left: -10px;
+}
+
+a {
+  display: block;
+}
+
+img {
+  width: auto;
+  height: 40px;
+}
+
+@media (max-width: 700px) {
+  .company-info {
+    justify-content: space-between;
+  }
 }
