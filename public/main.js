@@ -1,5 +1,6 @@
 var timerStarted = false;
 var searchResults = document.querySelector('.search-results');
+var laborFilter = document.querySelector('.labor-filter');
 var pageableEl = document.querySelector('.results-pageable');
 
 // Events for the search box
@@ -12,11 +13,16 @@ document.querySelector('.search-box').addEventListener('keyup', function(event) 
 
 function timerEnd() {
   timerStarted = false;
-  callApi(document.querySelector('.search-box').value, 0);
+  var laborTypes = findCheckedLaborTypes();
+  callApi(document.querySelector('.search-box').value, 0, laborTypes);
 }
 
-function callApi(searchTerm, startPosition) {
-  fetch(`/api/companies/?q=${searchTerm}&start=${startPosition}`).then(function(result) {
+function callApi(searchTerm, startPosition, laborTypes) {
+  var request = `/api/companies/?q=${searchTerm}&start=${startPosition}`;
+  if (laborTypes) {
+    request = `/api/companies/?q=${searchTerm}&start=${startPosition}&laborTypes=${laborTypes}`;
+  }
+  fetch(request).then(function(result) {
     return result.json();
   }).then(function(response) {
     searchResults.innerHTML = '';
@@ -25,6 +31,9 @@ function callApi(searchTerm, startPosition) {
       createZeroResultsView(searchTerm);
     } else {
       createResultsListView(response);
+      laborFilter.classList.remove('hide');
+      laborFilter.dataset.searchTerm = searchTerm;
+      laborFilter.dataset.startPosition = startPosition;
       if (response.total > response.results.length) {
           createPageableView(response, startPosition, searchTerm);
       }
@@ -97,10 +106,23 @@ function createEl(type) {
   return document.createElement(type);
 }
 
+// Labor filter click event handler
+laborFilter.addEventListener('click', function(event) {
+  var dataAttr = event.currentTarget.dataset;
+  var laborTypes = findCheckedLaborTypes();
+  callApi(dataAttr.searchTerm, dataAttr.startPosition, laborTypes);
+})
+
 // Events on select of search result list item
-document.querySelector('.search-results').addEventListener('click', function(event) {
+searchResults.addEventListener('click', function(event) {
   event.target.childNodes[1].classList.remove('hide');
 })
+
+function findCheckedLaborTypes() {
+  return Array.from(document.querySelectorAll('[name=labor-type]'))
+    .filter(function(el){return el.checked})
+    .map(function(el){return el.value}).join(',');
+}
 
 function createPageableView(response, startPosition, searchTerm) {
   startPosition = +startPosition;
@@ -138,11 +160,9 @@ function createPageableView(response, startPosition, searchTerm) {
 }
 
 document.querySelector('.results-pageable').addEventListener('click', function(event) {
-  if (event.target.dataset.start) {
-    callApi(event.target.dataset.searchTerm, event.target.dataset.start);
+  var laborTypes = findCheckedLaborTypes();
+  var eventData = event.target.dataset;
+  if (eventData.start) {
+    callApi(eventData.searchTerm, eventData.start, laborTypes);
   }
 });
-
-// todos:
-// labor type filters
-// collapse listing on click close

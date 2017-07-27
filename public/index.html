@@ -8,7 +8,34 @@
     <link rel="stylesheet" type="text/css" href="main.css"></link>
   </head>
   <body>
-    <input class="search-box" type="search" placeholder="search companies by name"/>
+    <input class="search-box" type="search" placeholder="Search companies by name"/>
+    <fieldset class="labor-filter hide">
+      <legend>Filter Search Results by Labor Type</legend>
+      <div>
+        <label>
+          <input type="checkbox" name="labor-type" value="Union">
+          Union
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" name="labor-type" value="Non-Union">
+          Non-Union
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" name="labor-type" value="Prevailing Wages">
+          Prevailing Wages
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" name="labor-type" value="None">
+          None
+        </label>
+      </div>
+    </fieldset>
     <ul class="search-results"></ul>
     <div class="results-pageable"></div>
     <script type="text/javascript" src="main.js"></script>
