@@ -1,5 +1,8 @@
 body {
   font-family: Helvetica, Arial, sans-serif;
+  max-width: 768px;
+  padding: 10px;
+  margin: auto;
 }
 
 .search-box {
@@ -27,7 +30,7 @@ body {
 .company-info {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .hide {
@@ -36,10 +39,13 @@ body {
 
 .image-container {
   padding-right: 10px;
+  width: 50%;
 }
 
 .info-container {
-
+  width: 50%;
+  font-weight: normal;
+  font-size: 14px;
 }
 
 .labor-types {
@@ -84,12 +90,12 @@ a {
 }
 
 img {
-  width: 150px;
+  width: 200px;
   height: auto;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 500px) {
   .company-info {
-    justify-content: space-between;
+    flex-direction: column;
   }
 }
